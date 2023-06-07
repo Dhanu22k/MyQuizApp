@@ -3,12 +3,9 @@ package com.example.myquizapp.ui.create;
 import static android.content.Context.MODE_PRIVATE;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -16,25 +13,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.myquizapp.LoginPage;
-import com.example.myquizapp.MainActivity;
 import com.example.myquizapp.R;
 import com.example.myquizapp.databinding.FragmentCreateBinding;
-import com.example.myquizapp.databinding.FragmentHomeBinding;
-import com.example.myquizapp.databinding.FragmentProfileBinding;
-import com.example.myquizapp.ui.dashboard.DashboardFragment;
-import com.example.myquizapp.ui.home.HomeFragment;
-import com.example.myquizapp.ui.profile.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -76,10 +64,10 @@ public class CreateFragment extends Fragment {
                             Bundle bundle=new Bundle();
                             bundle.putString("quizname",quizName);
                             //changing fragment
-                            Fragment createQuizFrg=new CreateQuizFragment();
+                            Fragment createQuizFrg=new CreateQuizViewModel.CreateQuizFragment();
                             createQuizFrg.setArguments(bundle);
                             FragmentTransaction fragmentTransaction=getActivity().getSupportFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.container,createQuizFrg,"tag").addToBackStack(null).commit();
+                            fragmentTransaction.replace(R.id.nav_host_fragment_activity_main,createQuizFrg).commit();
                             navView=getActivity().findViewById(R.id.nav_view);
                             navView.setVisibility(View.GONE);
                         }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E1FFFFFF"
-    tools:context=".ui.create.CreateQuizFragment">
+    tools:context=".ui.create.CreateQuizViewModel$CreateQuizFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             android:layout_height="76dp"
             android:layout_marginEnd="200dp"
             android:background="#0028ED"
-            android:text="Exit"
+            android:text="Cancel"
             android:textAlignment="center"
             android:textSize="30sp"
             android:textStyle="bold"
