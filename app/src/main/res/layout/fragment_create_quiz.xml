@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E1FFFFFF"
-    tools:context=".ui.create.CreateQuizFragment">
+    tools:context=".ui.create.CreateQuizViewModel$CreateQuizFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
