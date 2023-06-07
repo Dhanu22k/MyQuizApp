@@ -109,7 +109,8 @@ public class RegisterPage extends AppCompatActivity {
     private void insertUserData(String mail,String userName,String password) throws InterruptedException {
 
 
-        auth.createUserWithEmailAndPassword(mail,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        auth.createUserWithEmailAndPassword(mail,password).addOnCompleteListener(new OnCompleteListener<AuthResult>()
+        {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){

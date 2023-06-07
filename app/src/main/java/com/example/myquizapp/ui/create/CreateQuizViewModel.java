@@ -1,7 +1,10 @@
 package com.example.myquizapp.ui.create;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -18,15 +21,24 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myquizapp.MainActivity;
+import com.example.myquizapp.R;
+import com.example.myquizapp.RegisterPage;
 import com.example.myquizapp.databinding.FragmentCreateQuizBinding;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CreateQuizViewModel extends ViewModel {
@@ -165,9 +177,13 @@ public class CreateQuizViewModel extends ViewModel {
             cancelBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent=new Intent(getActivity(), MainActivity.class);
-                    getActivity().startActivity(intent);
-                    getActivity().finish();
+                    Fragment crt = new CreateFragment();
+                    BottomNavigationView navView = getActivity().findViewById(R.id.nav_view);
+                    navView.setVisibility(View.VISIBLE);
+                    FragmentTransaction txn = getActivity().getSupportFragmentManager().beginTransaction();
+                    txn.replace(R.id.nav_host_fragment_activity_main, crt);
+                    txn.detach(crt);
+                    txn.commit();
                 }
 
             });
@@ -176,13 +192,48 @@ public class CreateQuizViewModel extends ViewModel {
             saveBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(questions.size()>0) {
+                        SharedPreferences sharedPref = getActivity().getSharedPreferences("savedUserData", MODE_PRIVATE);
+                        String uid = sharedPref.getString("uid", "");
+                        DatabaseReference userDB = FirebaseDatabase.getInstance().getReference();
+                        String qid = userDB.child("users").child(uid).child("quiz").push().getKey();
+                        userDB.child("users").child(uid).child("quiz").child(qid).child("quizName").setValue(quizNameTextView.getText().toString());
+                        userDB.child("users").child(uid).child("quiz").child(qid).child("date").setValue(java.time.LocalDate.now().toString());
+                        userDB.child("users").child(uid).child("quiz").child(qid).child("questions").setValue(questions)
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(getActivity(), "Quiz creation Failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Toast.makeText(getActivity(), "Quiz Created", Toast.LENGTH_SHORT).show();
+                                        Fragment crt = new CreateFragment();
+                                        BottomNavigationView navView = getActivity().findViewById(R.id.nav_view);
+                                        navView.setVisibility(View.VISIBLE);
+                                        FragmentTransaction txn = getActivity().getSupportFragmentManager().beginTransaction();
+                                        txn.replace(R.id.nav_host_fragment_activity_main, crt);
+                                        txn.detach(crt);
+                                        txn.commit();
+                                    }
+                                });
 
+
+                    }
+                    else{
+                        Toast.makeText(getActivity(), "Atleast 1 Question is needed", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
 
 
             return root;
         }
+
+
+        //saving the quiz data in firebase
 
         private void addQuestion(String qName,String ans,String op1,String op2,String op3){
             questions.add(new Question(i++, qName, op1, op2, op3, ans));

@@ -67,7 +67,7 @@ public class CreateFragment extends Fragment {
                             Fragment createQuizFrg=new CreateQuizViewModel.CreateQuizFragment();
                             createQuizFrg.setArguments(bundle);
                             FragmentTransaction fragmentTransaction=getActivity().getSupportFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.container,createQuizFrg,"tag").addToBackStack(null).commit();
+                            fragmentTransaction.replace(R.id.nav_host_fragment_activity_main,createQuizFrg).commit();
                             navView=getActivity().findViewById(R.id.nav_view);
                             navView.setVisibility(View.GONE);
                         }
