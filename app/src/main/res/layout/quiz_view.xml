@@ -8,7 +8,7 @@
     android:paddingBottom="5sp">
 
     <TextView
-        android:id="@+id/quizName"
+        android:id="@+id/quizViewQuizNmae"
         android:layout_width="326dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -20,13 +20,13 @@
         android:textColor="#002DD3"
         android:textSize="25sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/button"
+        app:layout_constraintEnd_toStartOf="@+id/deleteQuizBtn"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/deleteQuizBtn"
         android:layout_width="72dp"
         android:layout_height="44dp"
         android:layout_marginTop="4dp"
@@ -47,10 +47,10 @@
         android:textColor="#000000"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/quizName" />
+        app:layout_constraintTop_toBottomOf="@+id/quizViewQuizNmae" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/totalQuestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -59,7 +59,7 @@
         android:textColor="#000000"
         android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/textView9"
-        app:layout_constraintTop_toBottomOf="@+id/quizName" />
+        app:layout_constraintTop_toBottomOf="@+id/quizViewQuizNmae" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -69,11 +69,11 @@
         android:layout_marginTop="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10"
+        app:layout_constraintTop_toBottomOf="@+id/totalQuestion"
         app:srcCompat="@drawable/baseline_calendar_month_24" />
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/date"
         android:layout_width="110dp"
         android:layout_height="23dp"
         android:layout_marginStart="3dp"
@@ -85,7 +85,7 @@
         app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/editQuizBtn"
         android:layout_width="56dp"
         android:layout_height="45dp"
         android:layout_marginTop="32dp"
@@ -93,6 +93,6 @@
         android:background="@drawable/baseline_create_24"
         android:backgroundTint="#000000"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/quizName" />
+        app:layout_constraintTop_toBottomOf="@+id/quizViewQuizNmae" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

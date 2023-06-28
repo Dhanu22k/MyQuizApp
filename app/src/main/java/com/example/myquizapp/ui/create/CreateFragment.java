@@ -18,11 +18,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.myquizapp.MainActivity;
 import com.example.myquizapp.R;
 import com.example.myquizapp.databinding.FragmentCreateBinding;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class CreateFragment extends Fragment {
     ImageButton createBtn;
@@ -45,7 +52,6 @@ public class CreateFragment extends Fragment {
             public void onClick(View v) {
                 AlertDialog.Builder alertName = new AlertDialog.Builder(getContext());
                 final EditText inputName = new EditText(getContext());
-
                 inputName.setHint("Quiz name");
                 alertName.setTitle("Enter the name for Quiz");
                 // titles can be used regardless of a custom layout or not
@@ -68,6 +74,7 @@ public class CreateFragment extends Fragment {
                             fragmentTransaction.replace(R.id.nav_host_fragment_activity_main,createQuizFrg).commit();
                             navView=getActivity().findViewById(R.id.nav_view);
                             navView.setVisibility(View.GONE);
+                            createBtn.setVisibility(View.INVISIBLE);
                         }
                         else{
                             Toast.makeText(getContext(),"Name is required",Toast.LENGTH_SHORT).show();
@@ -90,14 +97,29 @@ public class CreateFragment extends Fragment {
     }
 
     private void showQuiz(){
-
+        QuizAdapter quizAdapter;
         SharedPreferences sharedPref = getContext().getSharedPreferences("savedUserData", MODE_PRIVATE);
         String uid = sharedPref.getString("uid", "");
-
-
-        databaseReference = FirebaseDatabase.getInstance().getReference("users");
-
-
+        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(uid);
+        FirebaseRecyclerOptions<Quiz> options=new FirebaseRecyclerOptions.Builder<Quiz>()
+                .setQuery( databaseReference.child("quiz"),Quiz.class)
+                .build();
+            quizAdapter=new QuizAdapter(options);
+            quizRecyclerView.setAdapter(quizAdapter);
+//        databaseReference.child(uid).get().addOnCompleteListener(task -> {
+//            if (task.isSuccessful()) {
+//                if (task.getResult().exists()) {
+//                    DataSnapshot dataSnapshot = task.getResult();
+//                    Toast.makeText(getActivity(), String.valueOf(dataSnapshot.child("fullName").getValue()), Toast.LENGTH_SHORT).show();
+//
+//                } else {
+//                    Toast.makeText(getActivity(), "data not found", Toast.LENGTH_SHORT).show();
+//                }
+//
+//            } else {
+//                Toast.makeText(getActivity(), "something went wrong", Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
 

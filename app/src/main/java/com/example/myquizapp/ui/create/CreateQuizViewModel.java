@@ -34,6 +34,7 @@ import com.example.myquizapp.databinding.FragmentCreateQuizBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -180,6 +181,8 @@ public class CreateQuizViewModel extends ViewModel {
                     Fragment crt = new CreateFragment();
                     BottomNavigationView navView = getActivity().findViewById(R.id.nav_view);
                     navView.setVisibility(View.VISIBLE);
+                    FloatingActionButton fbtn = getActivity().findViewById(R.id.createBtn);
+                    fbtn.setVisibility(View.VISIBLE);
                     FragmentTransaction txn = getActivity().getSupportFragmentManager().beginTransaction();
                     txn.replace(R.id.nav_host_fragment_activity_main, crt);
                     txn.detach(crt);
@@ -213,6 +216,8 @@ public class CreateQuizViewModel extends ViewModel {
                                         Fragment crt = new CreateFragment();
                                         BottomNavigationView navView = getActivity().findViewById(R.id.nav_view);
                                         navView.setVisibility(View.VISIBLE);
+                                        FloatingActionButton fbtn = getActivity().findViewById(R.id.createBtn);
+                                        fbtn.setVisibility(View.VISIBLE);
                                         FragmentTransaction txn = getActivity().getSupportFragmentManager().beginTransaction();
                                         txn.replace(R.id.nav_host_fragment_activity_main, crt);
                                         txn.detach(crt);
