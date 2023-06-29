@@ -7,14 +7,37 @@
     android:layout_height="match_parent"
     tools:context=".ui.create.CreateFragment">
 
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include
+            layout="@layout/quiz_view_shimmer"
+            android:layout_marginTop="196dp"
+            app:layout_constraintEnd_toStartOf="@+id/quizRecyclerView"
+            app:layout_constraintHorizontal_bias="0.007"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/quizRecyclerView"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/createBtn"
@@ -28,12 +51,16 @@
         android:cropToPadding="false"
         android:fadeScrollbars="false"
         android:src="@drawable/baseline_add"
-        app:backgroundTint="@color/purple_200"
+        app:backgroundTint="@color/red"
         app:fabCustomSize="78sp"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:maxImageSize="35sp"
-        app:useCompatPadding="false" />
+        app:useCompatPadding="false"
+        android:elevation="30dp"
+        />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

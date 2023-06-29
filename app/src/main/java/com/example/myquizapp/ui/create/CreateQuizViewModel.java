@@ -202,6 +202,8 @@ public class CreateQuizViewModel extends ViewModel {
                         String qid = userDB.child("users").child(uid).child("quiz").push().getKey();
                         userDB.child("users").child(uid).child("quiz").child(qid).child("quizName").setValue(quizNameTextView.getText().toString());
                         userDB.child("users").child(uid).child("quiz").child(qid).child("date").setValue(java.time.LocalDate.now().toString());
+                        userDB.child("users").child(uid).child("quiz").child(qid).child("quizId").setValue(qid);
+                        userDB.child("users").child(uid).child("quiz").child(qid).child("questionCount").setValue(questions.size());
                         userDB.child("users").child(uid).child("quiz").child(qid).child("questions").setValue(questions)
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override

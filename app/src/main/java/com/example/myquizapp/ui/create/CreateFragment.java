@@ -1,6 +1,8 @@
 package com.example.myquizapp.ui.create;
 
 import static android.content.Context.MODE_PRIVATE;
+
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,23 +21,29 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myquizapp.MainActivity;
 import com.example.myquizapp.R;
 import com.example.myquizapp.databinding.FragmentCreateBinding;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class CreateFragment extends Fragment {
     ImageButton createBtn;
     BottomNavigationView navView;
     DatabaseReference databaseReference;
     RecyclerView quizRecyclerView;
+    QuizAdapter quizAdapter;
+    ArrayList<Quiz> list;
+    String uid;
+    ShimmerFrameLayout shimmerFrameLayout;
+
     private @NonNull FragmentCreateBinding binding;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -45,6 +53,10 @@ public class CreateFragment extends Fragment {
         createBtn=binding.createBtn;
         quizRecyclerView=binding.quizRecyclerView;
         quizRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        SharedPreferences sharedPref = getContext().getSharedPreferences("savedUserData", MODE_PRIVATE);
+        uid = sharedPref.getString("uid", "");
+        shimmerFrameLayout=binding.shimmerView;
+        shimmerFrameLayout.startShimmerAnimation();
         showQuiz();
 
         createBtn.setOnClickListener(new View.OnClickListener() {
@@ -96,30 +108,36 @@ public class CreateFragment extends Fragment {
         return root;
     }
 
+
+
+
+    @SuppressLint("SuspiciousIndentation")
     private void showQuiz(){
-        QuizAdapter quizAdapter;
-        SharedPreferences sharedPref = getContext().getSharedPreferences("savedUserData", MODE_PRIVATE);
-        String uid = sharedPref.getString("uid", "");
-        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(uid);
-        FirebaseRecyclerOptions<Quiz> options=new FirebaseRecyclerOptions.Builder<Quiz>()
-                .setQuery( databaseReference.child("quiz"),Quiz.class)
-                .build();
-            quizAdapter=new QuizAdapter(options);
-            quizRecyclerView.setAdapter(quizAdapter);
-//        databaseReference.child(uid).get().addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                if (task.getResult().exists()) {
-//                    DataSnapshot dataSnapshot = task.getResult();
-//                    Toast.makeText(getActivity(), String.valueOf(dataSnapshot.child("fullName").getValue()), Toast.LENGTH_SHORT).show();
-//
-//                } else {
-//                    Toast.makeText(getActivity(), "data not found", Toast.LENGTH_SHORT).show();
-//                }
-//
-//            } else {
-//                Toast.makeText(getActivity(), "something went wrong", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(uid).child("quiz");
+                databaseReference.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list=new ArrayList<>();
+                quizAdapter=new QuizAdapter(getContext(),list);
+                quizRecyclerView.setAdapter(quizAdapter);
+                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    Quiz quiz=dataSnapshot.getValue(Quiz.class);
+                    list.add(quiz);
+                }
+                shimmerFrameLayout.stopShimmerAnimation();
+                shimmerFrameLayout.setVisibility(View.INVISIBLE);
+                quizAdapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
     }
 
 
