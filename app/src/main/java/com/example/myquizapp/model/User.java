@@ -3,6 +3,10 @@ package com.example.myquizapp.model;
 public class User {
     String mail;
     String fullName;
+
+    public User() {
+    }
+
     String password;
 
     public User(String mail, String fullName, String password) {

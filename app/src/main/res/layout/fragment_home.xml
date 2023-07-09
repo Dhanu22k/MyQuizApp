@@ -1,23 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="413dp"
-        android:layout_height="122dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="427dp"
-        android:text="Home"
-        android:textAlignment="center"
-        android:textColor="#020202"
-        android:textSize="60sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="400dp"
+        android:layout_height="41dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/inputbg"
+        android:backgroundTint="#EBFAF3"
+        android:drawableLeft="@drawable/baseline_search_24"
+        android:queryHint="Search quiz" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/SearchToRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

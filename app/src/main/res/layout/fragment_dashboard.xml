@@ -6,17 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".ui.dashboard.DashboardFragment">
 
-    <TextView
-        android:id="@+id/text_dashboard"
-        android:layout_width="391dp"
-        android:layout_height="166dp"
-        android:layout_marginStart="8dp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/dashRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="DashBoard"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:textSize="60sp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

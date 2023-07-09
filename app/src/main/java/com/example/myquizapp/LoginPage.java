@@ -16,11 +16,16 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.myquizapp.databinding.ActivityMainBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginPage extends AppCompatActivity {
     Button RegisterBtn, loginButton;
@@ -63,14 +68,31 @@ public class LoginPage extends AppCompatActivity {
                             .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                 @Override
                                 public void onSuccess(AuthResult authResult) {
-                                    Toast.makeText(LoginPage.this, "Success", Toast.LENGTH_SHORT).show();
-                                    SharedPreferences sharedPreferences = getSharedPreferences("savedUserData", MODE_PRIVATE);
-// Creating an Editor object to edit(write to the file)
                                     String uid=authResult.getUser().getUid();
-                                    SharedPreferences.Editor myEdit = sharedPreferences.edit();
-// Storing the key and its value as the data fetched from edittext
-                                    myEdit.putString("uid",uid);
-                                    myEdit.commit();
+                                    DatabaseReference userDB = FirebaseDatabase.getInstance().getReference();
+
+                                    userDB.child("users").child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                            if (!task.isSuccessful()) {
+
+                                            }
+                                            else {
+                                              String name=String.valueOf(task.getResult().child("fullName").getValue());
+                                                SharedPreferences sharedPreferences = getSharedPreferences("savedUserData", MODE_PRIVATE);
+                                                SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                                                myEdit.putString("uid",uid);
+                                                myEdit.putString("username",name);
+                                                myEdit.commit();
+                                            }
+                                        }
+                                    });
+
+
+
+
+                                    Toast.makeText(LoginPage.this, "Success", Toast.LENGTH_SHORT).show();
+
 
 
                                     binding = ActivityMainBinding.inflate(getLayoutInflater());

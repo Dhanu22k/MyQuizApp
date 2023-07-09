@@ -3,10 +3,10 @@ package com.example.myquizapp.ui.create;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,20 +27,22 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myquizapp.MainActivity;
 import com.example.myquizapp.R;
-import com.example.myquizapp.RegisterPage;
 import com.example.myquizapp.databinding.FragmentCreateQuizBinding;
+import com.example.myquizapp.model.User;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class CreateQuizViewModel extends ViewModel {
     // TODO: Implement the ViewModel
@@ -66,7 +68,7 @@ public class CreateQuizViewModel extends ViewModel {
             String quizNameString=String.valueOf(bundle.getString("quizname"));
            quizNameTextView=binding.quizNameTextView;
            quizNameTextView.setText(quizNameString);
-
+            RecyclerView rcv=getActivity().findViewById(R.id.quizRecyclerView);
             removeBtn = binding.questionRemoveBtn;
             removeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -180,7 +182,9 @@ public class CreateQuizViewModel extends ViewModel {
                 public void onClick(View v) {
                     Fragment crt = new CreateFragment();
                     BottomNavigationView navView = getActivity().findViewById(R.id.nav_view);
+
                     navView.setVisibility(View.VISIBLE);
+                    rcv.setVisibility(View.VISIBLE);
                     FloatingActionButton fbtn = getActivity().findViewById(R.id.createBtn);
                     fbtn.setVisibility(View.VISIBLE);
                     FragmentTransaction txn = getActivity().getSupportFragmentManager().beginTransaction();
@@ -198,13 +202,23 @@ public class CreateQuizViewModel extends ViewModel {
                     if(questions.size()>0) {
                         SharedPreferences sharedPref = getActivity().getSharedPreferences("savedUserData", MODE_PRIVATE);
                         String uid = sharedPref.getString("uid", "");
+                        String username=sharedPref.getString("username","");
                         DatabaseReference userDB = FirebaseDatabase.getInstance().getReference();
+
+
                         String qid = userDB.child("users").child(uid).child("quiz").push().getKey();
                         userDB.child("users").child(uid).child("quiz").child(qid).child("quizName").setValue(quizNameTextView.getText().toString());
                         userDB.child("users").child(uid).child("quiz").child(qid).child("date").setValue(java.time.LocalDate.now().toString());
                         userDB.child("users").child(uid).child("quiz").child(qid).child("quizId").setValue(qid);
                         userDB.child("users").child(uid).child("quiz").child(qid).child("questionCount").setValue(questions.size());
-                        userDB.child("users").child(uid).child("quiz").child(qid).child("questions").setValue(questions)
+                        userDB.child("users").child(uid).child("quiz").child(qid).child("questions").setValue(questions);
+                        userDB.child("publicquiz").child(qid).child("userid").setValue(uid);
+                        userDB.child("publicquiz").child(qid).child("quizid").setValue(qid);
+                        userDB.child("publicquiz").child(qid).child("totalquestion").setValue(questions.size());
+                        userDB.child("publicquiz").child(qid).child("creater").setValue(username);
+                        userDB.child("publicquiz").child(qid).child("quizname").setValue(quizNameTextView.getText().toString());
+                        userDB.child("publicquiz").child(qid).child("date").setValue(java.time.LocalDate.now().toString())
+
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
@@ -214,6 +228,7 @@ public class CreateQuizViewModel extends ViewModel {
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
+                                        rcv.setVisibility(View.VISIBLE);
                                         Toast.makeText(getActivity(), "Quiz Created", Toast.LENGTH_SHORT).show();
                                         Fragment crt = new CreateFragment();
                                         BottomNavigationView navView = getActivity().findViewById(R.id.nav_view);
