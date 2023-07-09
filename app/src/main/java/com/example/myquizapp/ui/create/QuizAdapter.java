@@ -14,9 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myquizapp.MainActivity;
 import com.example.myquizapp.R;
-import com.example.myquizapp.ui.profile.ProfileFragment;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
@@ -55,6 +52,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> 
                 alert.setPositiveButton("Yes",((dialog, which) -> {
                     FirebaseDatabase.getInstance().getReference().child("users").child(MainActivity.GlobalUserId).child("quiz")
                                     .child(quiz.getQuizId()).removeValue();
+                    FirebaseDatabase.getInstance().getReference().child("publicquiz").child(quiz.getQuizId()).removeValue();
                     Toast.makeText(context," Quiz Deleted",Toast.LENGTH_SHORT).show();
                 }));
                 alert.setNegativeButton("No",(dialog, which) -> {
@@ -77,7 +75,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             quizName=itemView.findViewById(R.id.quizViewQuizNmae);
-            date=itemView.findViewById(R.id.date);
+            date=itemView.findViewById(R.id.homequizDate);
             deleteQuiz=itemView.findViewById(R.id.deleteQuizBtn);
             totalQuestion=itemView.findViewById(R.id.totalQuestion);
         }

@@ -2,22 +2,34 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:id="@+id/quizListLayout"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="3dp"
-    android:layout_marginTop="3dp"
-    android:layout_marginRight="3dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginRight="5dp"
     android:background="@drawable/bordershape"
     android:backgroundTint="#CDCBCB"
     android:paddingBottom="5sp">
 
-    <TextView
-        android:id="@+id/quizViewQuizNmae"
-        android:layout_width="326dp"
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/homequizDate"
+        app:layout_constraintStart_toEndOf="@+id/homequizDate"
+        app:layout_constraintTop_toTopOf="@+id/homequizDate"
+        app:srcCompat="@drawable/baseline_person_3_24" />
+
+    <TextView
+        android:id="@+id/homeQuizName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
         android:elevation="10dp"
         android:fontFamily="serif-monospace"
         android:text="IAS 2019 "
@@ -25,22 +37,9 @@
         android:textColor="#002DD3"
         android:textSize="25sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/deleteQuizBtn"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/deleteQuizBtn"
-        android:layout_width="62dp"
-        android:layout_height="55dp"
-        android:layout_marginEnd="4dp"
-        android:background="@drawable/baseline_delete_forever_24"
-        android:backgroundTint="#000000"
-        android:elevation="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
 
     <TextView
         android:id="@+id/textView9"
@@ -53,29 +52,27 @@
         android:textColor="#000000"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/quizViewQuizNmae" />
+        app:layout_constraintTop_toBottomOf="@+id/homeQuizName" />
 
     <TextView
-        android:id="@+id/totalQuestion"
+        android:id="@+id/hometotalQuestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:fontFamily="sans-serif-black"
         android:text="20"
         android:textColor="#000000"
         android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView9"
         app:layout_constraintStart_toEndOf="@+id/textView9"
-        app:layout_constraintTop_toBottomOf="@+id/quizViewQuizNmae" />
+        app:layout_constraintTop_toTopOf="@+id/textView9" />
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="47dp"
-        android:layout_height="36dp"
+        android:layout_width="42dp"
+        android:layout_height="33dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/totalQuestion"
+        app:layout_constraintTop_toBottomOf="@+id/textView9"
         app:srcCompat="@drawable/baseline_calendar_month_24" />
 
     <TextView
@@ -89,5 +86,15 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
         app:layout_constraintStart_toEndOf="@+id/imageView3"
         app:layout_constraintTop_toTopOf="@+id/imageView3" />
+
+    <TextView
+        android:id="@+id/homeAuthorName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+        app:layout_constraintStart_toEndOf="@+id/imageView4"
+        app:layout_constraintTop_toTopOf="@+id/imageView4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -57,11 +57,13 @@ public class CreateFragment extends Fragment {
         uid = sharedPref.getString("uid", "");
         shimmerFrameLayout=binding.shimmerView;
         shimmerFrameLayout.startShimmerAnimation();
+
         showQuiz();
 
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 AlertDialog.Builder alertName = new AlertDialog.Builder(getContext());
                 final EditText inputName = new EditText(getContext());
                 inputName.setHint("Quiz name");
@@ -87,6 +89,7 @@ public class CreateFragment extends Fragment {
                             navView=getActivity().findViewById(R.id.nav_view);
                             navView.setVisibility(View.GONE);
                             createBtn.setVisibility(View.INVISIBLE);
+                            quizRecyclerView.setVisibility(View.INVISIBLE);
                         }
                         else{
                             Toast.makeText(getContext(),"Name is required",Toast.LENGTH_SHORT).show();

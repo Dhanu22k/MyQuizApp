@@ -40,7 +40,6 @@ public class ProfileFragment extends Fragment {
         logOutBtn=binding.btnLogOut;
         progressBar=binding.profileProgresBar;
         progressBar.setVisibility(View.INVISIBLE);
-
         SharedPreferences sharedPref = getContext().getSharedPreferences("savedUserData", MODE_PRIVATE);
         String uid = sharedPref.getString("uid", "");
         if (profileViewModel.getUid() == null) {
